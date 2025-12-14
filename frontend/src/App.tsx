@@ -4,6 +4,7 @@ import { LoginForm } from './components/auth/LoginForm';
 import { RegisterForm } from './components/auth/RegisterForm';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { SweetsPage } from './pages/SweetsPage';
+import { CartPage } from './pages/CartPage';
 
 const App: React.FC = () => {
   return (
@@ -16,6 +17,14 @@ const App: React.FC = () => {
         element={
           <ProtectedRoute>
             <SweetsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/cart"
+        element={
+          <ProtectedRoute>
+            <CartPage />
           </ProtectedRoute>
         }
       />

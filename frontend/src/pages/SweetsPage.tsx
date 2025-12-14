@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import type { Sweet } from '../types/index';
 import {
   getSweetsApi,
-  purchaseSweetApi,
   deleteSweetApi,
   createSweetApi,
   updateSweetApi,
@@ -11,6 +10,7 @@ import { SweetCard } from '../components/sweets/SweetCard';
 import { AddSweetModal } from '../components/sweets/AddSweetModal';
 import { EditSweetModal } from '../components/sweets/EditSweetModal';
 import { useAuth } from '../hooks/useAuth';
+import { useCart } from '../hooks/useCart';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { Button } from '../components/common/Button';
 import { Plus } from 'lucide-react';
@@ -22,6 +22,7 @@ export const SweetsPage: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingSweet, setEditingSweet] = useState<Sweet | null>(null);
   const { isAdmin } = useAuth();
+  const { addToCart } = useCart();
 
   const loadSweets = async () => {
     try {
@@ -36,13 +37,11 @@ export const SweetsPage: React.FC = () => {
     }
   };
 
-  const handlePurchase = async (id: string) => {
-    try {
-      await purchaseSweetApi(id, 1);
-      await loadSweets();
-      alert('Purchase successful!');
-    } catch (err: any) {
-      alert(err.response?.data?.detail || 'Purchase failed');
+  const handleAddToCart = (id: string) => {
+    const sweet = sweets.find(s => s.id === id);
+    if (sweet) {
+      addToCart(sweet, 1);
+      alert(`${sweet.name} added to cart!`);
     }
   };
 
@@ -146,7 +145,7 @@ export const SweetsPage: React.FC = () => {
               <SweetCard
                 key={sweet.id}
                 sweet={sweet}
-                onPurchase={handlePurchase}
+                onAddToCart={handleAddToCart}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 isAdmin={isAdmin}

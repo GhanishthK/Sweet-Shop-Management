@@ -7,7 +7,7 @@ app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
-    description="Sweet Shop Management System API"
+    description="Shudh Sweets Management System API"
 )
 
 # CORS middleware
@@ -28,7 +28,7 @@ app.include_router(inventory.router, prefix=f"{settings.API_V1_STR}/sweets", tag
 def root():
     """Root endpoint"""
     return {
-        "message": "Sweet Shop API",
+        "message": "Shudh Sweets API",
         "version": settings.VERSION,
         "docs": "/docs"
     }
